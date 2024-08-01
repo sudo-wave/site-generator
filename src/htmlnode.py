@@ -6,7 +6,7 @@ class HTMLNode:
         self.props = props
 
     def to_html(self):
-        raise NotImplementedError
+        raise NotImplementedError(".to_html() method not implemented")
 
     def props_to_html(self):
         """Return a string that represents the HTML attributes of the node.
@@ -17,21 +17,14 @@ class HTMLNode:
          href="https://www.google.com" target="_blank"
         """
         html_attributes = ""
-        if self.props == None:
+        if self.props is None:
             return html_attributes
-        for i in self.props:
-            html_attributes = html_attributes + f' {i}="{self.props.get(i)}"'
+        for prop in self.props:
+            html_attributes += f' {prop}="{self.props.get(prop)}"'
         return html_attributes
 
     def __repr__(self):
-        return (
-            "HTMLNode(\n"
-            f"  tag={self.tag}\n"
-            f"  value={self.value}\n"
-            f"  children={self.children}\n"
-            f"  props={self.props_to_html()}\n"
-            ")"
-        )
+        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
 
 
 class LeafNode(HTMLNode):

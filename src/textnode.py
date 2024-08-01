@@ -15,17 +15,12 @@ class TextNode:
     def __eq__(self, other):
         """Returns True if all of the properties of two TextNode objects are equal.
 
-        >>> text1 = "node"
-        >>> text2 = "not a node"
-        >>> text_type1 = "normal"
-        >>> text_type2 = "not normal"
-        >>> n1 = TextNode(text1, text_type1)
-        >>> n2 = TextNode(text1, text_type1)
+        >>> n1 = TextNode("Node", "text")
+        >>> n2 = TextNode("Node", "text")
+        >>> n3 = TextNode("Node", "bold")
         >>> n1 == n2
         True
-        >>> n3 = TextNode(text1, text_type1)
-        >>> n4 = TextNode(text2, text_type1)
-        >>> n3 == n4
+        >>> n1 == n3
         False
         """
         if self.text != other.text:
@@ -40,18 +35,12 @@ class TextNode:
         """Returns a string representation of the TextNode object, i.e.,
         TextNode(text, text_type, url)
 
-        >>> n1 = TextNode("node1", "normal", "123")
+        >>> n1 = TextNode("node1", "text", "123")
         >>> n2 = TextNode("node2", "bold", "abc")
-        >>> n3 = TextNode("node3", "italic")
-        >>> n4 = TextNode("node4", "normal", "https://google.com")
         >>> print(n1)
-        TextNode(node1, normal, 123)
+        TextNode(node1, text, 123)
         >>> print(n2)
         TextNode(node2, bold, abc)
-        >>> print(n3)
-        TextNode(node3, italic, None)
-        >>> print(n4)
-        TextNode(node4, normal, https://google.com)
         """
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
 

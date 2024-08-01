@@ -5,16 +5,45 @@ from htmlnode import HTMLNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_props_to_html(self):
-        props1 = {"href": "https://www.amazon.com", "target": "_blank"}
-        props2 = {"href": "https://www.google.com"}
+        props1 = {
+            "class": "greeting",
+            "href": "https://www.amazon.com",
+            "target": "_blank",
+        }
+        props2 = {"class": "greeting", "href": "https://www.google.com"}
+        node1 = HTMLNode("div", "Random text.", None, props1)
+        self.assertEqual(
+            node1.props_to_html(),
+            ' class="greeting" href="https://www.amazon.com" target="_blank"',
+        )
+        node2 = HTMLNode("div", "Random text.", None, props2)
+        self.assertEqual(
+            node2.props_to_html(), ' class="greeting" href="https://www.google.com"'
+        )
+
+    def test_props_to_html_empty(self):
         node = HTMLNode()
         self.assertEqual(node.props_to_html(), "")
-        node1 = HTMLNode(props=props1)
+
+    def test_values(self):
+        node = HTMLNode("div", "Random line of text.")
+        self.assertEqual(node.tag, "div")
+        self.assertEqual(node.value, "Random line of text.")
+        self.assertEqual(node.children, None)
+        self.assertEqual(node.props, None)
+
+    def test_empty_values(self):
+        node = HTMLNode()
+        self.assertEqual(node.tag, None)
+        self.assertEqual(node.value, None)
+        self.assertEqual(node.children, None)
+        self.assertEqual(node.props, None)
+
+    def test_repr(self):
+        node = HTMLNode("p", "Some text.", None, {"class": "primary"})
         self.assertEqual(
-            node1.props_to_html(), ' href="https://www.amazon.com" target="_blank"'
+            repr(node), "HTMLNode(p, Some text., None, {'class': 'primary'})"
         )
-        node2 = HTMLNode(props=props2)
-        self.assertEqual(node2.props_to_html(), ' href="https://www.google.com"')
 
 
 if __name__ == "__main__":
