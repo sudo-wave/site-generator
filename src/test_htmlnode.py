@@ -8,7 +8,7 @@ class TestHTMLNode(unittest.TestCase):
         props1 = {"href": "https://www.amazon.com", "target": "_blank"}
         props2 = {"href": "https://www.google.com"}
         node = HTMLNode()
-        self.assertEqual(node.props_to_html(), None)
+        self.assertEqual(node.props_to_html(), "")
         node1 = HTMLNode(props=props1)
         self.assertEqual(
             node1.props_to_html(), ' href="https://www.amazon.com" target="_blank"'
