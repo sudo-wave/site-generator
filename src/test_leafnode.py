@@ -11,14 +11,15 @@ class TestLeafNode(unittest.TestCase):
             pass
         else:
             raise AssertionError("TypeError was not raised")
+        props1 = {"href": "https://www.amazon.com", "target": "_blank"}
+        props2 = {"href": "https://www.google.com"}
+        node_no_value = LeafNode(None)
         try:
-            node_no_value = LeafNode(None)
+            node_no_value.to_html()
         except ValueError:
             pass
         else:
             raise AssertionError("ValueError was not raised")
-        props1 = {"href": "https://www.amazon.com", "target": "_blank"}
-        props2 = {"href": "https://www.google.com"}
         node_no_tag_no_value = LeafNode(value="Some text")
         self.assertEqual(node_no_tag_no_value.to_html(), "Some text")
         node_no_tag = LeafNode(value="More text", props=props1)

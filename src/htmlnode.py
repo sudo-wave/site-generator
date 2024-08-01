@@ -37,8 +37,6 @@ class HTMLNode:
 class LeafNode(HTMLNode):
     def __init__(self, value, tag=None, props=None):
         super().__init__(tag, value, None, props)
-        if self.value is None:
-            raise ValueError("All leaf nodes must have a value")
 
     def to_html(self):
         """Renders a leaf node as an HTML string (by returning a string).
@@ -50,9 +48,22 @@ class LeafNode(HTMLNode):
         >>> print(node2.to_html())
         <a href="https://www.google.com">Click me!</a>
         """
+        if self.value is None:
+            raise ValueError("All leaf nodes must have a value")
         if self.tag is None:
             return self.value
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+
+
+class ParentNode(HTMLNode):
+    def __init__(self, children, tag=None, props=None):
+        super().__init__(tag, None, children, props)
+
+    def to_html(self):
+        if self.tag == None:
+            raise ValueError("Parent node does not have a tag attribute")
+        if self.children == None:
+            raise ValueError("Parent node does not have a children attribute")
 
 
 if __name__ == "__main__":
