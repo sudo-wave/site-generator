@@ -24,7 +24,7 @@ For each Markdown file:
 
 1. Open the file and read its contents.
 2. Split the markdown file into "blocks" (i.e., paragraphs, headings, lists, etc.).
-3. Convert each block into a tree of **/HTMLNode** objects. For inline elements (e.g., bold text, links, etc.)
+3. Convert each block into a tree of **HTMLNode** objects. For inline elements (e.g., bold text, links, etc.)
    they are converted:
    - Raw markdown -> **TextNode** -> **HTMLNode**
 4. Join all the **HTMLNode** "blocks" under one large parent **HTMLNode** for the pages.
