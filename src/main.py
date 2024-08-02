@@ -69,3 +69,49 @@ def extract_markdown_images(text):
 def extract_markdown_links(text):
     pattern = r"\[(.*?)\]\((.*?)\)"
     return re.findall(pattern, text)
+
+
+def split_nodes_image(old_nodes):
+    new_nodes = []
+    for node in old_nodes:
+        node_text = node.get_text()
+        images = extract_markdown_images(node_text)
+        if len(images) != 2:
+            new_nodes.extend([node])
+            continue
+        if len(node_text) == 0:
+            continue
+        text_copy = node_text
+        for image in images:
+            image_alt, image_url = image[0], image[1]
+            text_split = text_copy.split(f"![{image_alt}]({image_url})")
+            if len(text_split[0]) != 0:
+                new_nodes.extend([TextNode(text_split[0], text_type_text)])
+            new_nodes.extend([TextNode(image_alt, text_type_image, image_url)])
+            text_copy = "".join(text_split[1:])
+        if len(text_copy) != 0:
+            new_nodes.extend([TextNode(text_copy[0], text_type_text)])
+    return new_nodes
+
+
+def split_nodes_link(old_nodes):
+    new_nodes = []
+    for node in old_nodes:
+        node_text = node.get_text()
+        links = extract_markdown_links(node_text)
+        if len(links) != 2:
+            new_nodes.extend([node])
+            continue
+        if len(node_text) == 0:
+            continue
+        text_copy = node_text
+        for link in links:
+            link_alt, link_url = link[0], link[1]
+            text_split = text_copy.split(f"![{link_alt}]({link_url})")
+            if len(text_split[0]) != 0:
+                new_nodes.extend([TextNode(text_split[0], text_type_text)])
+            new_nodes.extend([TextNode(link_alt, text_type_link, link_url)])
+            text_copy = "".join(text_split[1:])
+        if len(text_copy) != 0:
+            new_nodes.extend([TextNode(text_copy[0], text_type_text)])
+    return new_nodes
