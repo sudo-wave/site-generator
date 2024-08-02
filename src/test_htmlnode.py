@@ -42,7 +42,7 @@ class TestHTMLNode(unittest.TestCase):
     def test_repr(self):
         node = HTMLNode("p", "Some text.", None, {"class": "primary"})
         self.assertEqual(
-            repr(node), "HTMLNode(p, Some text., None, {'class': 'primary'})"
+            repr(node), "HTMLNode(p, Some text., children: None, {'class': 'primary'})"
         )
 
 
