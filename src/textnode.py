@@ -17,13 +17,10 @@ class TextNode:
     def __eq__(self, other):
         """Returns True if all of the properties of two TextNode objects are equal.
 
-        >>> n1 = TextNode("Node", "text")
-        >>> n2 = TextNode("Node", "text")
-        >>> n3 = TextNode("Node", "bold")
-        >>> n1 == n2
+        >>> node1 = TextNode("Node", "text")
+        >>> node2 = TextNode("Node", "text")
+        >>> node1 == node2
         True
-        >>> n1 == n3
-        False
         """
         if self.text != other.text:
             return False
@@ -37,17 +34,20 @@ class TextNode:
         """Returns a string representation of the TextNode object, i.e.,
         TextNode(text, text_type, url)
 
-        >>> n1 = TextNode("node1", "text", "123")
-        >>> n2 = TextNode("node2", "bold", "abc")
-        >>> print(n1)
-        TextNode(node1, text, 123)
-        >>> print(n2)
-        TextNode(node2, bold, abc)
+        >>> node = TextNode("Text goes here", "Text type", "URL")
+        >>> print(node)
+        TextNode(Text goes here, Text type, URL)
         """
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
 
 def text_node_to_html_node(text_node):
+    """Return the respective LeafNode conversion from given TextNode
+
+    >>> node = TextNode("Random text on one line.", text_type_bold)
+    >>> text_node_to_html_node(node)
+    LeafNode(b, Random text on one line., None)
+    """
     node_text_type = text_node.text_type
     node_text = text_node.text
     if node_text_type == text_type_bold:

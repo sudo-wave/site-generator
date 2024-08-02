@@ -11,8 +11,7 @@ class HTMLNode:
     def props_to_html(self):
         """Return a string that represents the HTML attributes of the node.
 
-        >>> prop = {"href": "https://www.google.com", "target": "_blank"}
-        >>> node = HTMLNode(props=prop)
+        >>> node = HTMLNode(props={"href": "https://www.google.com", "target": "_blank"})
         >>> print(node.props_to_html())
          href="https://www.google.com" target="_blank"
         """
@@ -34,11 +33,8 @@ class LeafNode(HTMLNode):
     def to_html(self):
         """Renders a leaf node as an HTML string (by returning a string).
 
-        >>> node1 = LeafNode(tag="p", value="This is a paragraph of text.", props=None)
-        >>> print(node1.to_html())
-        <p>This is a paragraph of text.</p>
-        >>> node2 = LeafNode(tag="a", value="Click me!", props={"href": "https://www.google.com"})
-        >>> print(node2.to_html())
+        >>> node = LeafNode(tag="a", value="Click me!", props={"href": "https://www.google.com"})
+        >>> print(node.to_html())
         <a href="https://www.google.com">Click me!</a>
         """
         if self.value is None:
@@ -58,14 +54,14 @@ class ParentNode(HTMLNode):
     def to_html(self):
         """Return a string representation of the HTML tag and node and its children.
 
-        >>> node = ParentNode("p", [LeafNode("b", "Bold Text"), LeafNode(None, "Normal Text"), LeafNode("i", "Italic Text"), LeafNode(None, "Normal Text")])
+        >>> node = ParentNode("p", [LeafNode(None, "Normal Text"), LeafNode("b", "Bold Text"), LeafNode(None, "Normal Text")])
         >>> print(node.to_html())
-        <p><b>Bold Text</b>Normal Text<i>Italic Text</i>Normal Text</p>
+        <p>Normal Text<b>Bold Text</b>Normal Text</p>
         """
         if self.tag is None:
-            raise ValueError("ParentNode does not contain tag attribute")
+            raise ValueError("Invalid HTML: does not contain tag")
         if self.children is None:
-            raise ValueError("ParentNode does not contain children attribute")
+            raise ValueError("Invalid HTML: does not contain children")
         html_string = "<" + self.tag + self.props_to_html() + ">"
         if isinstance(self, LeafNode):
             return self.props_to_html()
