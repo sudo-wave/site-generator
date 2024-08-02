@@ -12,6 +12,15 @@ class TextNode:
         self.text_type = text_type
         self.url = url
 
+    def get_text(self):
+        return self.text
+
+    def get_text_type(self):
+        return self.text_type
+
+    def get_url(self):
+        return self.url
+
     def __eq__(self, other):
         """Returns True if all of the properties of two TextNode objects are equal.
 
