@@ -13,7 +13,7 @@ from textnode import (
 )
 
 
-class TestLeafNode(unittest.TestCase):
+class TestTextToHTML(unittest.TestCase):
     def test_text_node_to_html_node(self):
         node = TextNode("Random text", text_type_text, "Random url")
         self.assertTrue(isinstance(text_node_to_html_node(node), LeafNode))

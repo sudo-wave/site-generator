@@ -12,7 +12,7 @@ from textnode import (
 )
 
 
-class TestLeafNode(unittest.TestCase):
+class TestSplitDelimiter(unittest.TestCase):
     maxDiff = None
 
     def test_split_delimiter_return_list(self):
