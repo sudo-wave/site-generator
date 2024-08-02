@@ -52,14 +52,28 @@ class LeafNode(HTMLNode):
 
 
 class ParentNode(HTMLNode):
-    def __init__(self, children, tag=None, props=None):
+    def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
 
     def to_html(self):
-        if self.tag == None:
-            raise ValueError("Parent node does not have a tag attribute")
-        if self.children == None:
-            raise ValueError("Parent node does not have a children attribute")
+        """Return a string representation of the HTML tag and node and its children.
+
+        >>> node = ParentNode("p", [LeafNode("b", "Bold Text"), LeafNode(None, "Normal Text"), LeafNode("i", "Italic Text"), LeafNode(None, "Normal Text")])
+        >>> print(node.to_html())
+        <p><b>Bold Text</b>Normal Text<i>Italic Text</i>Normal Text</p>
+        """
+        if self.tag is None:
+            raise ValueError("ParentNode does not contain tag attribute")
+        if self.children is None:
+            raise ValueError("ParentNode does not contain children attribute")
+        html_string = "<" + self.tag + self.props_to_html() + ">"
+        if isinstance(self, LeafNode):
+            return self.props_to_html()
+        if len(self.children) == 0:
+            return html_string + "</" + self.tag + ">"
+        for child in self.children:
+            html_string += child.to_html()
+        return html_string + "</" + self.tag + ">"
 
 
 if __name__ == "__main__":
