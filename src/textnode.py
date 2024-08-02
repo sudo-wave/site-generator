@@ -1,3 +1,5 @@
+from htmlnode import LeafNode
+
 text_type_text = "text"
 text_type_bold = "bold"
 text_type_italic = "italic"
@@ -11,15 +13,6 @@ class TextNode:
         self.text = text
         self.text_type = text_type
         self.url = url
-
-    def get_text(self):
-        return self.text
-
-    def get_text_type(self):
-        return self.text_type
-
-    def get_url(self):
-        return self.url
 
     def __eq__(self, other):
         """Returns True if all of the properties of two TextNode objects are equal.
@@ -52,6 +45,24 @@ class TextNode:
         TextNode(node2, bold, abc)
         """
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
+
+
+def text_node_to_html_node(text_node):
+    node_text_type = text_node.text_type
+    node_text = text_node.text
+    if node_text_type == text_type_bold:
+        return LeafNode("b", node_text)
+    if node_text_type == text_type_code:
+        return LeafNode("code", node_text)
+    if node_text_type == text_type_image:
+        return LeafNode("img", "", {"src": text_node.url, "alt": node_text})
+    if node_text_type == text_type_italic:
+        return LeafNode("i", node_text)
+    if node_text_type == text_type_link:
+        return LeafNode("a", node_text, {"href": text_node.url})
+    if node_text_type == text_type_text:
+        return LeafNode(None, node_text)
+    raise Exception(f"Invalid text type, {node_text_type}")
 
 
 if __name__ == "__main__":

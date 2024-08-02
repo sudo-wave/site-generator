@@ -5,18 +5,6 @@ class HTMLNode:
         self.children = children
         self.props = props
 
-    def get_tag(self):
-        return self.tag
-
-    def get_value(self):
-        return self.value
-
-    def get_children(self):
-        return self.children
-
-    def get_props(self):
-        return self.props
-
     def to_html(self):
         raise NotImplementedError(".to_html() method not implemented")
 
