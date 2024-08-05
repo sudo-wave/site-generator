@@ -12,7 +12,8 @@ from textnode import (
 
 bold_delimiter = "**"
 code_delimiter = "`"
-italic_delimiter = "*"
+italic_delimiter1 = "*"
+italic_delimiter2 = "_"
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -123,7 +124,8 @@ def text_to_textnodes(text):
     node = [TextNode(text, text_type_text)]
     node = split_nodes_delimiter(node, bold_delimiter, text_type_bold)
     node = split_nodes_delimiter(node, code_delimiter, text_type_code)
-    node = split_nodes_delimiter(node, italic_delimiter, text_type_italic)
+    node = split_nodes_delimiter(node, italic_delimiter1, text_type_italic)
+    node = split_nodes_delimiter(node, italic_delimiter2, text_type_italic)
     node = split_nodes_images(node)
     node = split_nodes_links(node)
     return node
