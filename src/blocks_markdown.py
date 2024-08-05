@@ -1,5 +1,3 @@
-import os
-
 from htmlnode import ParentNode
 from inline_markdown import text_to_textnodes
 from textnode import text_node_to_html_node
@@ -19,45 +17,11 @@ tag_list_item = "li"
 tag_unordered_list = "ul"
 tag_ordered_list = "ol"
 
-CWD = os.getcwd()
-DIR = os.listdir(CWD)
-CWD += "/testfiles"
-
-
-def get_markdown_file():
-    markdown_file = input("Enter filename: ")
-    file_directory = CWD + f"/{markdown_file}"
-    if os.path.exists(file_directory):
-        return file_directory
-
-
-def read_markdown_file(markdown_file):
-    if markdown_file is None:
-        raise Exception("File does not exist")
-    with open(markdown_file, "r") as file:
-        lines = file.readlines()
-    return lines
-
 
 def markdown_to_blocks(markdown):
     blocks = markdown.split("\n\n")
     filtered_blocks = [block.strip() for block in blocks if block != ""]
     return filtered_blocks
-
-
-# Previous code for function above
-#    markdown_block = []
-#    text = ""
-#    for line in markdown:
-#        if line != "\n":
-#            line = line.strip()
-#            text += line
-#        else:
-#            markdown_block.append(text)
-#            text = ""
-#    if text != "":
-#        markdown_block.append(text)
-#    return markdown_block
 
 
 def block_to_block_type(markdown_block):
