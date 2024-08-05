@@ -1,9 +1,8 @@
 import os
-import shutil
 
 from copy_files import copy_contents
 from delete_files import delete_contents
-from generate_content import generate_page
+from generate_content_recursive import generate_pages_recursive
 
 path_static = "./static/"
 path_public = "./public/"
@@ -21,7 +20,7 @@ def main():
     path_static_list = os.listdir(path_static)
     copy_contents(path_static, path_static_list, path_public)
     # After copying, generate a new index.html in ./public from ./content
-    generate_page(path_content + "index.md", path_template, path_public)
+    generate_pages_recursive(path_content, path_template, path_public)
 
 
 main()

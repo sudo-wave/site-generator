@@ -15,7 +15,8 @@ def generate_pages_recursive(content_path, template_path, dst_path):
     if len(content_list) >= 1:
         md_files = [file for file in content_list if file.endswith(".md")]
         for file in md_files:
-            generate_page(file, template_path, dst_path)
+            file_path = os.path.join(content_path, file)
+            generate_page(file_path, template_path, dst_path)
         rest = [file for file in content_list if not file.endswith(".md")]
         for file in rest:
             if not os.path.isfile(file):

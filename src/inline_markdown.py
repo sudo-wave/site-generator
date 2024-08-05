@@ -125,7 +125,6 @@ def text_to_textnodes(text):
     node = split_nodes_delimiter(node, bold_delimiter, text_type_bold)
     node = split_nodes_delimiter(node, code_delimiter, text_type_code)
     node = split_nodes_delimiter(node, italic_delimiter1, text_type_italic)
-    node = split_nodes_delimiter(node, italic_delimiter2, text_type_italic)
     node = split_nodes_images(node)
     node = split_nodes_links(node)
     return node
