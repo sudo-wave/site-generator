@@ -1,4 +1,24 @@
+"""A module for representing and manipulating a simple HTML document object model (DOM) tree."""
+
+
 class HTMLNode:
+    """A class to represent an HTML node in a document object model (DOM) tree.
+
+    Attributes:
+    tag: str, optional
+        The HTML tag (e.g., 'div', 'p', 'a') associated with this node.
+        Default is None.
+    value: str, optional
+        The text content or value associated with this node.
+        Default is None.
+    children: list of HTMLNode, optional
+        A list of child nodes representing the nested structure within this node.
+        Default is None.
+    props: dict, optional
+        A dictionary of properties/attributes (e.g., {'id': 'main', 'class': 'container'}).
+        Default is None.
+    """
+
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag
         self.value = value
@@ -6,14 +26,20 @@ class HTMLNode:
         self.props = props
 
     def to_html(self):
+        """Convert the HTMLNode object and its children into an HTML string representation
+
+        Raises: NotImplementedError
+            Method not implemented in HTMLNode class
+        """
         raise NotImplementedError(".to_html() method not implemented")
 
     def props_to_html(self):
-        """Return a string that represents the HTML attributes of the node.
+        """Convert the properties of the HTMLNode instance into a string of HTML attributes
 
-        >>> node = HTMLNode(props={"href": "https://www.google.com", "target": "_blank"})
-        >>> print(node.props_to_html())
-         href="https://www.google.com" target="_blank"
+        Returns:
+        str
+            HTML attributes represented as a string, formatted  as key-value pairs
+            If the 'props' attribute is None an empty string is returned
         """
         html_attributes = ""
         if self.props is None:
@@ -27,15 +53,32 @@ class HTMLNode:
 
 
 class LeafNode(HTMLNode):
+    """A class to represent a leaf node in the DOM tree (does not have any child nodes).
+    Inherits from the HTMLNode class.
+
+    Attributes:
+    tag: str
+        The HTML tag name (e.g., 'img', 'input') associated with this leaf node.
+    value: str
+        The text content or value associated with this leaf node.
+    props: dict, optional
+        A dictionary of properties/attributes (e.g., {'src': 'image.png'}).
+        Default is None.
+    """
+
     def __init__(self, tag, value, props=None):
         super().__init__(tag, value, None, props)
 
     def to_html(self):
-        """Renders a leaf node as an HTML string (by returning a string).
+        """Convert the LeafNode  instance into an HTML string representation.
 
-        >>> node = LeafNode(tag="a", value="Click me!", props={"href": "https://www.google.com"})
-        >>> print(node.to_html())
-        <a href="https://www.google.com">Click me!</a>
+        Returns: str
+            The HTML string representing this leaf node, including its tag, attributes, and value.
+
+        Example:
+        >>> node = LeafNode(tag="a", value="Click me!")
+        >>> node.to_html()
+        '<a>Click me!</a>'
         """
         if self.value is None:
             raise ValueError("Invalid HTML: no value")
@@ -48,15 +91,41 @@ class LeafNode(HTMLNode):
 
 
 class ParentNode(HTMLNode):
+    """A class to represent a parent node in the DOM tree.
+    Can have one or more child nodes.
+    Inherits from the HTMLNode class.
+
+    Attributes:
+    tag: str
+        The HTML tag name (e.g., 'div', 'ul') associated with this parent node.
+    children: list of HTMLNode
+        A list of child nodes representing the nested structure within this parent node.
+    props: dict, optional
+        A dictionary of properties/attributes (e.g., {'id': 'container', 'class': 'main'}).
+        Default is None.
+    """
+
     def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
 
     def to_html(self):
-        """Return a string representation of the HTML tag and node and its children.
+        """Convert the ParentNode into an HTML string representation.
 
-        >>> node = ParentNode("p", [LeafNode(None, "Normal Text"), LeafNode("b", "Bold Text"), LeafNode(None, "Normal Text")])
-        >>> print(node.to_html())
-        <p>Normal Text<b>Bold Text</b>Normal Text</p>
+        Returns: str
+        HTML string representing this node, including its tag, attributes, and HTML of its children.
+
+        Raises: ValueError
+        If the node has no tag (i.e., 'self.tag' is None) or if the node has no
+        children (i.e., 'self.children' is None).
+
+        Notes:
+        For a 'LeafNode', the method returns the properties as an HTML attribute string.
+        If the node has no children, the method returns a self-closing tag.
+
+        Example:
+        >>> node = ParentNode("p", [LeafNode(None, "Normal Text")])
+        >>> node.to_html()
+        '<p>Normal Text</p>'
         """
         if self.tag is None:
             raise ValueError("Invalid HTML: does not contain tag")

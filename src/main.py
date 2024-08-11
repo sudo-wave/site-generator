@@ -10,9 +10,6 @@ path_content = "./content/"
 path_template = "template.html"
 
 
-# TODO: Chaing {main} function to use {generate_pages_recursive} instead of {generate_page}
-
-
 def main():
     # First delete the ./public/ folder
     delete_contents(path_public)
