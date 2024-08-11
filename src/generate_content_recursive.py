@@ -2,13 +2,6 @@ import os
 
 from generate_content import generate_page
 
-# TODO: Edit the ./content/index.md file and remove the (sorry the link doesn't work yet) comment
-
-# TODO: Create generate_pages_recursive(dir_path_content, template_path, dst_dir_path):
-# 1. Crawl every entry in the {content} directory
-# 2. For each markdown file found, generate a new {.html} file using the same {template.html}
-# NOTE: The generated pages should be written to the {public} directory in the same directory structure
-
 
 def generate_pages_recursive(content_path, template_path, dst_path):
     content_list = os.listdir(content_path)

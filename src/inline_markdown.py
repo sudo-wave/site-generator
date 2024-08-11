@@ -1,13 +1,13 @@
 import re
 
 from textnode import (
+    TEXT_TYPE_BOLD,
+    TEXT_TYPE_CODE,
+    TEXT_TYPE_IMAGE,
+    TEXT_TYPE_ITALIC,
+    TEXT_TYPE_LINK,
+    TEXT_TYPE_TEXT,
     TextNode,
-    text_type_bold,
-    text_type_code,
-    text_type_image,
-    text_type_italic,
-    text_type_link,
-    text_type_text,
 )
 
 bold_delimiter = "**"
@@ -21,12 +21,12 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     split into multiple nodes based on syntax
 
     >>> node = TextNode("This is text with a **bolded** word in the middle", "text")
-    >>> split_nodes_delimiter([node], "**", text_type_bold)
+    >>> split_nodes_delimiter([node], "**", TEXT_TYPE_BOLD)
     [TextNode(This is text with a , text, None), TextNode(bolded, bold, None), TextNode( word in the middle, text, None)]
     """
     new_nodes = []
     for old_node in old_nodes:
-        if old_node.text_type != text_type_text:
+        if old_node.text_type != TEXT_TYPE_TEXT:
             new_nodes.append(old_node)
             continue
         split_nodes = []
@@ -37,7 +37,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if sections[i] == "":
                 continue
             if i % 2 == 0:
-                split_nodes.append(TextNode(sections[i], text_type_text))
+                split_nodes.append(TextNode(sections[i], TEXT_TYPE_TEXT))
             else:
                 split_nodes.append(TextNode(sections[i], text_type))
         new_nodes.extend(split_nodes)
@@ -66,7 +66,7 @@ def split_nodes_images(old_nodes):
     """
     new_nodes = []
     for node in old_nodes:
-        if node.text_type != text_type_text:
+        if node.text_type != TEXT_TYPE_TEXT:
             new_nodes.append(node)
             continue
         text_copy = node.text
@@ -80,11 +80,11 @@ def split_nodes_images(old_nodes):
             if len(sections) != 2:
                 raise ValueError("Invalid Markdown format: image section not closed")
             if sections[0] != "":
-                new_nodes.append(TextNode(sections[0], text_type_text))
-            new_nodes.append(TextNode(image_alt, text_type_image, image_url))
+                new_nodes.append(TextNode(sections[0], TEXT_TYPE_TEXT))
+            new_nodes.append(TextNode(image_alt, TEXT_TYPE_IMAGE, image_url))
             text_copy = sections[1]
         if text_copy != "":
-            new_nodes.append(TextNode(text_copy, text_type_text))
+            new_nodes.append(TextNode(text_copy, TEXT_TYPE_TEXT))
     return new_nodes
 
 
@@ -98,7 +98,7 @@ def split_nodes_links(old_nodes):
     """
     new_nodes = []
     for node in old_nodes:
-        if node.text_type != text_type_text:
+        if node.text_type != TEXT_TYPE_TEXT:
             new_nodes.append(node)
             continue
         text_copy = node.text
@@ -112,19 +112,19 @@ def split_nodes_links(old_nodes):
             if len(sections) != 2:
                 raise ValueError("Invalid Markdown format: link section not closed")
             if sections[0] != "":
-                new_nodes.append(TextNode(sections[0], text_type_text))
-            new_nodes.append(TextNode(link_alt, text_type_link, link_url))
+                new_nodes.append(TextNode(sections[0], TEXT_TYPE_TEXT))
+            new_nodes.append(TextNode(link_alt, TEXT_TYPE_LINK, link_url))
             text_copy = sections[1]
         if text_copy != "":
-            new_nodes.append(TextNode(text_copy, text_type_text))
+            new_nodes.append(TextNode(text_copy, TEXT_TYPE_TEXT))
     return new_nodes
 
 
 def text_to_textnodes(text):
-    node = [TextNode(text, text_type_text)]
-    node = split_nodes_delimiter(node, bold_delimiter, text_type_bold)
-    node = split_nodes_delimiter(node, code_delimiter, text_type_code)
-    node = split_nodes_delimiter(node, italic_delimiter1, text_type_italic)
+    node = [TextNode(text, TEXT_TYPE_TEXT)]
+    node = split_nodes_delimiter(node, bold_delimiter, TEXT_TYPE_BOLD)
+    node = split_nodes_delimiter(node, code_delimiter, TEXT_TYPE_CODE)
+    node = split_nodes_delimiter(node, italic_delimiter1, TEXT_TYPE_ITALIC)
     node = split_nodes_images(node)
     node = split_nodes_links(node)
     return node
