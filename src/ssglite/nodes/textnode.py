@@ -1,8 +1,7 @@
 """Module providing a LeafNode object"""
 
-import constants
-
-from .htmlnode import LeafNode
+import ssglite.constants as tt
+from ssglite.nodes import LeafNode
 
 
 class TextNode:
@@ -32,16 +31,16 @@ def text_node_to_html_node(text_node):
     """Return the respective LeafNode conversion from given TextNode"""
     node_text_type = text_node.text_type
     node_text = text_node.text
-    if node_text_type == constants.TEXT_TYPE_BOLD:
+    if node_text_type == tt.TEXT_TYPE_BOLD:
         return LeafNode("b", node_text)
-    if node_text_type == constants.TEXT_TYPE_CODE:
+    if node_text_type == tt.TEXT_TYPE_CODE:
         return LeafNode("code", node_text)
-    if node_text_type == constants.TEXT_TYPE_IMAGE:
+    if node_text_type == tt.TEXT_TYPE_IMAGE:
         return LeafNode("img", "", {"src": text_node.url, "alt": node_text})
-    if node_text_type == constants.TEXT_TYPE_ITALIC:
+    if node_text_type == tt.TEXT_TYPE_ITALIC:
         return LeafNode("i", node_text)
-    if node_text_type == constants.TEXT_TYPE_LINK:
+    if node_text_type == tt.TEXT_TYPE_LINK:
         return LeafNode("a", node_text, {"href": text_node.url})
-    if node_text_type == constants.TEXT_TYPE_TEXT:
+    if node_text_type == tt.TEXT_TYPE_TEXT:
         return LeafNode(None, node_text)
     raise ValueError(f"Invalid text type, {node_text_type}")

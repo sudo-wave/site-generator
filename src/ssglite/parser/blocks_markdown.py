@@ -1,7 +1,6 @@
-import constants
-from nodes import ParentNode, text_node_to_html_node
-
-from .inline_markdown import text_to_textnodes
+import ssglite.constants as tt
+from ssglite.nodes import ParentNode, text_node_to_html_node
+from ssglite.parser.inline_markdown import text_to_textnodes
 
 
 def markdown_to_blocks(markdown):
@@ -21,32 +20,32 @@ def block_to_block_type(markdown_block):
         or markdown_block.startswith("##### ")
         or markdown_block.startswith("###### ")
     ):
-        return constants.BLOCK_TYPE_HEADING
+        return tt.BLOCK_TYPE_HEADING
     if len(lines) > 1 and lines[0].startswith("```") and lines[-1].startswith("```"):
-        return constants.BLOCK_TYPE_CODE
+        return tt.BLOCK_TYPE_CODE
     if markdown_block.startswith(">"):
         for line in lines:
             if not line.startswith(">"):
-                return constants.BLOCK_TYPE_PARAGRAPH
-        return constants.BLOCK_TYPE_QUOTE
+                return tt.BLOCK_TYPE_PARAGRAPH
+        return tt.BLOCK_TYPE_QUOTE
     if markdown_block.startswith("* "):
         for line in lines:
             if not line.startswith("* "):
-                return constants.BLOCK_TYPE_PARAGRAPH
-        return constants.BLOCK_TYPE_UNORDERED_LIST
+                return tt.BLOCK_TYPE_PARAGRAPH
+        return tt.BLOCK_TYPE_UNORDERED_LIST
     if markdown_block.startswith("- "):
         for line in lines:
             if not line.startswith("- "):
-                return constants.BLOCK_TYPE_PARAGRAPH
-        return constants.BLOCK_TYPE_UNORDERED_LIST
+                return tt.BLOCK_TYPE_PARAGRAPH
+        return tt.BLOCK_TYPE_UNORDERED_LIST
     if markdown_block.startswith("1. "):
         i = 1
         for line in lines:
             if not line.startswith(f"{i}. "):
-                return constants.BLOCK_TYPE_PARAGRAPH
+                return tt.BLOCK_TYPE_PARAGRAPH
             i += 1
-        return constants.BLOCK_TYPE_ORDERED_LIST
-    return constants.BLOCK_TYPE_PARAGRAPH
+        return tt.BLOCK_TYPE_ORDERED_LIST
+    return tt.BLOCK_TYPE_PARAGRAPH
 
 
 def markdown_to_html_node(markdown):
@@ -70,17 +69,17 @@ def text_to_children(text):
 
 def create_child_node(block):
     block_type = block_to_block_type(block)
-    if block_type == constants.BLOCK_TYPE_PARAGRAPH:
+    if block_type == tt.BLOCK_TYPE_PARAGRAPH:
         return paragraph_to_html_node(block)
-    if block_type == constants.BLOCK_TYPE_HEADING:
+    if block_type == tt.BLOCK_TYPE_HEADING:
         return heading_to_html_node(block)
-    if block_type == constants.BLOCK_TYPE_CODE:
+    if block_type == tt.BLOCK_TYPE_CODE:
         return code_to_html_node(block)
-    if block_type == constants.BLOCK_TYPE_QUOTE:
+    if block_type == tt.BLOCK_TYPE_QUOTE:
         return quote_to_html_node(block)
-    if block_type == constants.BLOCK_TYPE_UNORDERED_LIST:
+    if block_type == tt.BLOCK_TYPE_UNORDERED_LIST:
         return unordered_list_to_html_node(block)
-    if block_type == constants.BLOCK_TYPE_ORDERED_LIST:
+    if block_type == tt.BLOCK_TYPE_ORDERED_LIST:
         return ordered_list_to_html_node(block)
 
 
@@ -88,7 +87,7 @@ def paragraph_to_html_node(block):
     lines = block.split("\n")
     paragraph = " ".join(lines)
     children = text_to_children(paragraph)
-    return ParentNode(constants.TAG_PARAGRAPH, children)
+    return ParentNode(tt.TAG_PARAGRAPH, children)
 
 
 def heading_to_html_node(block):
@@ -110,8 +109,8 @@ def code_to_html_node(block):
         raise ValueError("Invalid code block")
     text = block[4:-3]
     children = text_to_children(text)
-    code_node = ParentNode(constants.TAG_CODE, children)
-    return ParentNode(constants.TAG_PRETEXT, [code_node])
+    code_node = ParentNode(tt.TAG_CODE, children)
+    return ParentNode(tt.TAG_PRETEXT, [code_node])
 
 
 def quote_to_html_node(block):
@@ -123,7 +122,7 @@ def quote_to_html_node(block):
         new_lines.append(line.lstrip(">").strip())
     text = " ".join(new_lines)
     children = text_to_children(text)
-    return ParentNode(constants.TAG_QUOTE, children)
+    return ParentNode(tt.TAG_QUOTE, children)
 
 
 def unordered_list_to_html_node(block):
@@ -132,8 +131,8 @@ def unordered_list_to_html_node(block):
     for item in items:
         text = item[2:]
         children = text_to_children(text)
-        node_items.append(ParentNode(constants.TAG_LIST_ITEM, children))
-    return ParentNode(constants.TAG_UNORDERED_LIST, node_items)
+        node_items.append(ParentNode(tt.TAG_LIST_ITEM, children))
+    return ParentNode(tt.TAG_UNORDERED_LIST, node_items)
 
 
 def ordered_list_to_html_node(block):
@@ -142,5 +141,5 @@ def ordered_list_to_html_node(block):
     for item in items:
         text = item[3:]
         children = text_to_children(text)
-        node_items.append(ParentNode(constants.TAG_LIST_ITEM, children))
-    return ParentNode(constants.TAG_ORDERED_LIST, node_items)
+        node_items.append(ParentNode(tt.TAG_LIST_ITEM, children))
+    return ParentNode(tt.TAG_ORDERED_LIST, node_items)

@@ -2,8 +2,8 @@
 
 import re
 
-import constants
-from nodes import TextNode
+import ssglite.constants as tt
+from ssglite.nodes import TextNode
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
@@ -12,7 +12,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     """
     new_nodes = []
     for old_node in old_nodes:
-        if old_node.text_type != constants.TEXT_TYPE_TEXT:
+        if old_node.text_type != tt.TEXT_TYPE_TEXT:
             new_nodes.append(old_node)
             continue
         split_nodes = []
@@ -23,7 +23,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             if sections[i] == "":
                 continue
             if i % 2 == 0:
-                split_nodes.append(TextNode(sections[i], constants.TEXT_TYPE_TEXT))
+                split_nodes.append(TextNode(sections[i], tt.TEXT_TYPE_TEXT))
             else:
                 split_nodes.append(TextNode(sections[i], text_type))
         new_nodes.extend(split_nodes)
@@ -50,7 +50,7 @@ def split_nodes_images(old_nodes):
     """
     new_nodes = []
     for node in old_nodes:
-        if node.text_type != constants.TEXT_TYPE_TEXT:
+        if node.text_type != tt.TEXT_TYPE_TEXT:
             new_nodes.append(node)
             continue
         text_copy = node.text
@@ -64,11 +64,11 @@ def split_nodes_images(old_nodes):
             if len(sections) != 2:
                 raise ValueError("Invalid Markdown format: image section not closed")
             if sections[0] != "":
-                new_nodes.append(TextNode(sections[0], constants.TEXT_TYPE_TEXT))
-            new_nodes.append(TextNode(image_alt, constants.TEXT_TYPE_IMAGE, image_url))
+                new_nodes.append(TextNode(sections[0], tt.TEXT_TYPE_TEXT))
+            new_nodes.append(TextNode(image_alt, tt.TEXT_TYPE_IMAGE, image_url))
             text_copy = sections[1]
         if text_copy != "":
-            new_nodes.append(TextNode(text_copy, constants.TEXT_TYPE_TEXT))
+            new_nodes.append(TextNode(text_copy, tt.TEXT_TYPE_TEXT))
     return new_nodes
 
 
@@ -78,7 +78,7 @@ def split_nodes_links(old_nodes):
     """
     new_nodes = []
     for node in old_nodes:
-        if node.text_type != constants.TEXT_TYPE_TEXT:
+        if node.text_type != tt.TEXT_TYPE_TEXT:
             new_nodes.append(node)
             continue
         text_copy = node.text
@@ -92,26 +92,20 @@ def split_nodes_links(old_nodes):
             if len(sections) != 2:
                 raise ValueError("Invalid Markdown format: link section not closed")
             if sections[0] != "":
-                new_nodes.append(TextNode(sections[0], constants.TEXT_TYPE_TEXT))
-            new_nodes.append(TextNode(link_alt, constants.TEXT_TYPE_LINK, link_url))
+                new_nodes.append(TextNode(sections[0], tt.TEXT_TYPE_TEXT))
+            new_nodes.append(TextNode(link_alt, tt.TEXT_TYPE_LINK, link_url))
             text_copy = sections[1]
         if text_copy != "":
-            new_nodes.append(TextNode(text_copy, constants.TEXT_TYPE_TEXT))
+            new_nodes.append(TextNode(text_copy, tt.TEXT_TYPE_TEXT))
     return new_nodes
 
 
 def text_to_textnodes(text):
     """Returns a TextNode based on the input text"""
-    node = [TextNode(text, constants.TEXT_TYPE_TEXT)]
-    node = split_nodes_delimiter(
-        node, constants.DELIMITER_BOLD, constants.TEXT_TYPE_BOLD
-    )
-    node = split_nodes_delimiter(
-        node, constants.DELIMITER_CODE, constants.TEXT_TYPE_CODE
-    )
-    node = split_nodes_delimiter(
-        node, constants.DELIMITER_ITALIC, constants.TEXT_TYPE_ITALIC
-    )
+    node = [TextNode(text, tt.TEXT_TYPE_TEXT)]
+    node = split_nodes_delimiter(node, tt.DELIMITER_BOLD, tt.TEXT_TYPE_BOLD)
+    node = split_nodes_delimiter(node, tt.DELIMITER_CODE, tt.TEXT_TYPE_CODE)
+    node = split_nodes_delimiter(node, tt.DELIMITER_ITALIC, tt.TEXT_TYPE_ITALIC)
     node = split_nodes_images(node)
     node = split_nodes_links(node)
     return node

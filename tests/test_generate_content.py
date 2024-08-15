@@ -1,6 +1,6 @@
 import unittest
 
-from generate_content import extract_title
+from ssglite.core import extract_title
 
 
 class TestExtractTitle(unittest.TestCase):

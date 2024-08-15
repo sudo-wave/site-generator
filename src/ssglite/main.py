@@ -1,6 +1,6 @@
 import os
 
-from core import copy_contents, delete_contents, generate_pages_recursive
+from ssglite.core import copy_contents, delete_contents, generate_pages_recursive
 
 path_static = "./static/"
 path_public = "./public/"
