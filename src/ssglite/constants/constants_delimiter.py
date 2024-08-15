@@ -1,0 +1,5 @@
+"""Random"""
+
+DELIMITER_BOLD = "**"
+DELIMITER_CODE = "`"
+DELIMITER_ITALIC = "*"

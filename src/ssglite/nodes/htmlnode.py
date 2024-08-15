@@ -74,11 +74,6 @@ class LeafNode(HTMLNode):
 
         Returns: str
             The HTML string representing this leaf node, including its tag, attributes, and value.
-
-        Example:
-        >>> node = LeafNode(tag="a", value="Click me!")
-        >>> node.to_html()
-        '<a>Click me!</a>'
         """
         if self.value is None:
             raise ValueError("Invalid HTML: no value")
@@ -121,11 +116,6 @@ class ParentNode(HTMLNode):
         Notes:
         For a 'LeafNode', the method returns the properties as an HTML attribute string.
         If the node has no children, the method returns a self-closing tag.
-
-        Example:
-        >>> node = ParentNode("p", [LeafNode(None, "Normal Text")])
-        >>> node.to_html()
-        '<p>Normal Text</p>'
         """
         if self.tag is None:
             raise ValueError("Invalid HTML: does not contain tag")
@@ -139,9 +129,3 @@ class ParentNode(HTMLNode):
         for child in self.children:
             html_string += child.to_html()
         return html_string + "</" + self.tag + ">"
-
-
-if __name__ == "__main__":
-    import doctest
-
-    doctest.testmod()

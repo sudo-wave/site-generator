@@ -1,8 +1,6 @@
 import os
 
-from copy_files import copy_contents
-from delete_files import delete_contents
-from generate_content_recursive import generate_pages_recursive
+from core import copy_contents, delete_contents, generate_pages_recursive
 
 path_static = "./static/"
 path_public = "./public/"

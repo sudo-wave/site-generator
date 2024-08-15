@@ -1,13 +1,15 @@
 import unittest
 
-from blocks_markdown import (
+from ssglite.constants import (
+    BLOCK_TYPE_CODE,
+    BLOCK_TYPE_HEADING,
+    BLOCK_TYPE_ORDERED_LIST,
+    BLOCK_TYPE_PARAGRAPH,
+    BLOCK_TYPE_QUOTE,
+    BLOCK_TYPE_UNORDERED_LIST,
+)
+from ssglite.parser import (
     block_to_block_type,
-    block_type_code,
-    block_type_heading,
-    block_type_ordered_list,
-    block_type_paragraph,
-    block_type_quote,
-    block_type_unordered_list,
     markdown_to_blocks,
     markdown_to_html_node,
 )
@@ -59,17 +61,17 @@ This is the same paragraph on a new line.
 
     def test_block_to_block_types(self):
         block = "# heading"
-        self.assertEqual(block_to_block_type(block), block_type_heading)
+        self.assertEqual(block_to_block_type(block), BLOCK_TYPE_HEADING)
         block = "```\ncode\n```"
-        self.assertEqual(block_to_block_type(block), block_type_code)
+        self.assertEqual(block_to_block_type(block), BLOCK_TYPE_CODE)
         block = "> quote\n> more quote"
-        self.assertEqual(block_to_block_type(block), block_type_quote)
+        self.assertEqual(block_to_block_type(block), BLOCK_TYPE_QUOTE)
         block = "* list\n* items"
-        self.assertEqual(block_to_block_type(block), block_type_unordered_list)
+        self.assertEqual(block_to_block_type(block), BLOCK_TYPE_UNORDERED_LIST)
         block = "1. list\n2. items"
-        self.assertEqual(block_to_block_type(block), block_type_ordered_list)
+        self.assertEqual(block_to_block_type(block), BLOCK_TYPE_ORDERED_LIST)
         block = "paragraph"
-        self.assertEqual(block_to_block_type(block), block_type_paragraph)
+        self.assertEqual(block_to_block_type(block), BLOCK_TYPE_PARAGRAPH)
 
     def test_paragraph(self):
         md = """
